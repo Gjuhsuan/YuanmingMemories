@@ -408,8 +408,7 @@ def main():
             result.single()
         print("连接成功！")
 
-        if args["clear"]:
-            clear_database(driver)
+        clear_database(driver)
 
         create_indexes(driver)
 
