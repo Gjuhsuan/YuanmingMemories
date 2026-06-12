@@ -1,0 +1,667 @@
+@prefix : <http://www.yuanmingyuan-kg.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
+
+# ============================================================
+# 本体声明
+# ============================================================
+
+<http://www.yuanmingyuan-kg.org/ontology> rdf:type owl:Ontology ;
+    rdfs:label "圆明园事件知识图谱本体"@zh ,
+               "Yuanmingyuan Event Knowledge Graph Ontology"@en ;
+    rdfs:comment "本体面向清代皇家园林圆明园，以事件为核心节点，关联主体、地点、客体、时间与文献，支撑基于历史档案的事件知识图谱构建。本体设计参考CIDOC CRM概念参考模型，数据来源包括周维权《中国古典园林史（第三版）》与《清代档案史料——圆明园》。"@zh ,
+                 "An ontology for the Yuanmingyuan (Old Summer Palace) event knowledge graph, centered on historical events connecting agents, places, objects, temporal intervals, and documentary sources. Designed with reference to CIDOC CRM."@en ;
+    owl:versionInfo "1.0.0" .
+
+
+# ============================================================
+# 类层次 (Classes)
+# ============================================================
+
+# --------------------------------------------------
+# E31_Document 文献
+# --------------------------------------------------
+
+:Document rdf:type owl:Class ;
+    rdfs:label "文献"@zh , "Document"@en ;
+    rdfs:comment "记录圆明园相关历史信息的文本载体，包括史学著作与原始档案。"@zh ,
+                 "Textual carriers recording historical information related to Yuanmingyuan, including historiographical works and primary archival materials."@en ;
+    rdfs:seeAlso crm:E31_Document .
+
+:HistoricalDocument rdf:type owl:Class ;
+    rdfs:subClassOf :Document ;
+    rdfs:label "史学文献"@zh , "Historical Document"@en ;
+    rdfs:comment "由后世学者基于史料编纂而成的学术著作或研究文献。"@zh ,
+                 "Scholarly works compiled by later historians based on historical sources."@en .
+
+:ArchivalDocument rdf:type owl:Class ;
+    rdfs:subClassOf :Document ;
+    rdfs:label "档案文献"@zh , "Archival Document"@en ;
+    rdfs:comment "清代官方机构在行政运作过程中形成的原始档案记录。"@zh ,
+                 "Primary archival records produced by official Qing dynasty institutions during administrative operations."@en .
+
+
+# --------------------------------------------------
+# E39_Actor 主体
+# --------------------------------------------------
+
+:Actor rdf:type owl:Class ;
+    rdfs:label "主体"@zh , "Actor"@en ;
+    rdfs:comment "参与圆明园相关事件的行为主体，包括自然人与机构组织。"@zh ,
+                 "Agents involved in Yuanmingyuan-related events, including natural persons and institutional organizations."@en ;
+    rdfs:seeAlso crm:E39_Actor .
+
+# ---- 个人 ----
+
+:Person rdf:type owl:Class ;
+    rdfs:subClassOf :Actor ;
+    rdfs:label "个人"@zh , "Person"@en ;
+    rdfs:comment "以自然人身份参与圆明园相关事件的行为主体。"@zh ,
+                 "A natural person who participates in Yuanmingyuan-related events."@en .
+
+:ImperialFamily rdf:type owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label "皇室成员"@zh , "Imperial Family Member"@en ;
+    rdfs:comment "清代皇室血统或婚姻关系的成员，包括皇帝、太后、后妃及宗亲。"@zh ,
+                 "Members of the Qing imperial household by blood or marriage, including emperors, empress dowagers, consorts, and imperial kinsmen."@en .
+
+:Emperor rdf:type owl:Class ;
+    rdfs:subClassOf :ImperialFamily ;
+    rdfs:label "皇帝"@zh , "Emperor"@en ;
+    rdfs:comment "清代在位君主，圆明园的最高决策者与使用者。"@zh ,
+                 "The reigning Qing monarch, the supreme decision-maker and user of Yuanmingyuan."@en .
+
+:EmpressDowager rdf:type owl:Class ;
+    rdfs:subClassOf :ImperialFamily ;
+    rdfs:label "太后"@zh , "Empress Dowager"@en ;
+    rdfs:comment "先帝皇后或生母，在清代宫廷礼制中享有崇高地位。"@zh ,
+                 "The empress or birth mother of the preceding emperor, holding elevated status in Qing court protocol."@en .
+
+:Consort rdf:type owl:Class ;
+    rdfs:subClassOf :ImperialFamily ;
+    rdfs:label "后妃"@zh , "Consort"@en ;
+    rdfs:comment "皇帝的配偶，包括皇后及各等级嫔妃。"@zh ,
+                 "Spouses of the emperor, including the empress and consorts of various ranks."@en .
+
+:ImperialKinsman rdf:type owl:Class ;
+    rdfs:subClassOf :ImperialFamily ;
+    rdfs:label "皇室宗亲"@zh , "Imperial Kinsman"@en ;
+    rdfs:comment "清代爱新觉罗氏宗族成员中享有封爵或参与政务的皇室亲属。"@zh ,
+                 "Members of the Qing Aisin Gioro clan who hold noble titles or participate in governance."@en .
+
+:Official rdf:type owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label "官员"@zh , "Official"@en ;
+    rdfs:comment "在清代官僚体制中担任正式职官的文武官员。"@zh ,
+                 "Civil or military officials holding formal positions within the Qing bureaucratic system."@en .
+
+:Eunuch rdf:type owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label "太监"@zh , "Eunuch"@en ;
+    rdfs:comment "在宫廷中服务的净身男性，承担内廷事务管理与日常服侍职责。"@zh ,
+                 "Castrated males serving in the palace, responsible for inner court administration and daily attendance."@en .
+
+:Artisan rdf:type owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label "工匠"@zh , "Artisan"@en ;
+    rdfs:comment "参与圆明园营造、修缮、装饰等工程的手工技术人员。"@zh ,
+                 "Skilled manual workers engaged in the construction, repair, and decoration of Yuanmingyuan."@en .
+
+:GardenKeeper rdf:type owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label "园户"@zh , "Garden Keeper"@en ;
+    rdfs:comment "负责圆明园日常维护与看守事务的专职人员。"@zh ,
+                 "Dedicated personnel responsible for daily maintenance and guarding of Yuanmingyuan."@en .
+
+:OtherPerson rdf:type owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label "其他人物"@zh , "Other Person"@en ;
+    rdfs:comment "无法归入上述类别的其他参与圆明园相关事件的自然人。"@zh ,
+                 "Natural persons involved in Yuanmingyuan-related events who do not fall into the above categories."@en .
+
+# ---- 机构 ----
+
+:Organization rdf:type owl:Class ;
+    rdfs:subClassOf :Actor ;
+    rdfs:label "机构"@zh , "Organization"@en ;
+    rdfs:comment "参与圆明园相关事务的官方或非官方组织实体。"@zh ,
+                 "Official or unofficial organizational entities involved in Yuanmingyuan-related affairs."@en .
+
+:InnerCourtAgency rdf:type owl:Class ;
+    rdfs:subClassOf :Organization ;
+    rdfs:label "内廷机构"@zh , "Inner Court Agency"@en ;
+    rdfs:comment "直接服务于皇帝与皇室的宫廷内部行政机构，如内务府及其下属各司。"@zh ,
+                 "Palace administrative agencies directly serving the emperor and the imperial household, such as the Imperial Household Department."@en .
+
+:CentralGovernmentAgency rdf:type owl:Class ;
+    rdfs:subClassOf :Organization ;
+    rdfs:label "中央机构"@zh , "Central Government Agency"@en ;
+    rdfs:comment "清代中央政府层级的行政机构，如六部、都察院、内阁等。"@zh ,
+                 "Administrative agencies at the central government level, such as the Six Boards, the Censorate, and the Grand Secretariat."@en .
+
+:LocalGovernmentAgency rdf:type owl:Class ;
+    rdfs:subClassOf :Organization ;
+    rdfs:label "地方机构"@zh , "Local Government Agency"@en ;
+    rdfs:comment "清代地方行政体系中的各级官府，如省、府、州、县各级衙门。"@zh ,
+                 "Local government offices at various levels within the Qing provincial administration system."@en .
+
+:OtherOrganization rdf:type owl:Class ;
+    rdfs:subClassOf :Organization ;
+    rdfs:label "其他机构"@zh , "Other Organization"@en ;
+    rdfs:comment "无法归入上述类别的其他参与圆明园相关事务的组织实体。"@zh ,
+                 "Organizational entities involved in Yuanmingyuan-related affairs that do not fall into the above categories."@en .
+
+
+# --------------------------------------------------
+# E53_Place 地点
+# --------------------------------------------------
+
+:Place rdf:type owl:Class ;
+    rdfs:label "地点"@zh , "Place"@en ;
+    rdfs:comment "与圆明园相关事件有空间关联的地理位置或建成环境。"@zh ,
+                 "Geographic locations or built environments spatially associated with Yuanmingyuan-related events."@en ;
+    rdfs:seeAlso crm:E53_Place .
+
+# ---- 园外地点 ----
+
+:GardenExteriorPlace rdf:type owl:Class ;
+    rdfs:subClassOf :Place ;
+    rdfs:label "园外地点"@zh , "Garden Exterior Place"@en ;
+    rdfs:comment "位于圆明园园墙范围之外、与圆明园事件存在关联的地理空间。"@zh ,
+                 "Geographic spaces outside the walls of Yuanmingyuan that are associated with Yuanmingyuan events."@en .
+
+:AdministrativeRegion rdf:type owl:Class ;
+    rdfs:subClassOf :GardenExteriorPlace ;
+    rdfs:label "行政区域"@zh , "Administrative Region"@en ;
+    rdfs:comment "清代行政建制中的各级政区单元。"@zh ,
+                 "Administrative divisions at various levels within the Qing dynasty administrative system."@en .
+
+:CapitalRegion rdf:type owl:Class ;
+    rdfs:subClassOf :AdministrativeRegion ;
+    rdfs:label "京师行政区域"@zh , "Capital Region"@en ;
+    rdfs:comment "清代京师（今北京）范围内的行政区划，包括内城、外城及近郊各区域。"@zh ,
+                 "Administrative divisions within the Qing capital (present-day Beijing), including the inner city, outer city, and suburban areas."@en .
+
+:ProvincialRegion rdf:type owl:Class ;
+    rdfs:subClassOf :AdministrativeRegion ;
+    rdfs:label "地方行政区域"@zh , "Provincial Region"@en ;
+    rdfs:comment "京师以外的清代各省、府、州、县等地方行政区划。"@zh ,
+                 "Provincial, prefectural, and county-level administrative divisions outside the capital."@en .
+
+:ImperialGarden rdf:type owl:Class ;
+    rdfs:subClassOf :GardenExteriorPlace ;
+    rdfs:label "皇家园林"@zh , "Imperial Garden"@en ;
+    rdfs:comment "圆明园以外的其他清代皇家园林，如颐和园、畅春园、避暑山庄等。"@zh ,
+                 "Other Qing imperial gardens besides Yuanmingyuan, such as the Summer Palace, Changchunyuan, and the Mountain Resort."@en .
+
+:FunctionalSite rdf:type owl:Class ;
+    rdfs:subClassOf :GardenExteriorPlace ;
+    rdfs:label "功能场所"@zh , "Functional Site"@en ;
+    rdfs:comment "因承担特定经济或行政功能而与圆明园事件产生关联的园外场所。"@zh ,
+                 "Sites outside the garden associated with Yuanmingyuan events due to their specific economic or administrative functions."@en .
+
+:CustomsPort rdf:type owl:Class ;
+    rdfs:subClassOf :FunctionalSite ;
+    rdfs:label "关税口岸"@zh , "Customs Port"@en ;
+    rdfs:comment "清代设立的征收关税的口岸或税关，涉及圆明园物料运输与财政往来。"@zh ,
+                 "Qing dynasty customs stations or ports involved in material transportation and fiscal transactions related to Yuanmingyuan."@en .
+
+:MaterialOrigin rdf:type owl:Class ;
+    rdfs:subClassOf :FunctionalSite ;
+    rdfs:label "物料产地"@zh , "Material Origin"@en ;
+    rdfs:comment "为圆明园营造工程提供建筑材料的采办或出产地点。"@zh ,
+                 "Locations where building materials were sourced or procured for Yuanmingyuan construction projects."@en .
+
+:OtherFunctionalSite rdf:type owl:Class ;
+    rdfs:subClassOf :FunctionalSite ;
+    rdfs:label "其他功能场所"@zh , "Other Functional Site"@en ;
+    rdfs:comment "无法归入关税口岸或物料产地的其他具有特定功能的园外场所。"@zh ,
+                 "Other sites outside the garden with specific functions that do not fall into customs ports or material origins."@en .
+
+# ---- 园内地点 ----
+
+:GardenInteriorPlace rdf:type owl:Class ;
+    rdfs:subClassOf :Place ;
+    rdfs:label "园内地点"@zh , "Garden Interior Place"@en ;
+    rdfs:comment "位于圆明园（含长春园、绮春园）园墙范围之内的空间实体。"@zh ,
+                 "Spatial entities within the walls of Yuanmingyuan (including Changchunyuan and Qichunyuan)."@en .
+
+:ScenicArea rdf:type owl:Class ;
+    rdfs:subClassOf :GardenInteriorPlace ;
+    rdfs:label "景区景点"@zh , "Scenic Area"@en ;
+    rdfs:comment "圆明园中以特定造景主题命名的园林景观区域，如四十景等。"@zh ,
+                 "Landscape areas within Yuanmingyuan named after specific scenic themes, such as the Forty Scenes."@en .
+
+:BuildingComplex rdf:type owl:Class ;
+    rdfs:subClassOf :GardenInteriorPlace ;
+    rdfs:label "建筑组群"@zh , "Building Complex"@en ;
+    rdfs:comment "由多座单体建筑围合或组合而成的建筑群落。"@zh ,
+                 "Architectural ensembles composed of multiple individual buildings arranged in a coherent spatial layout."@en .
+
+:IndividualBuilding rdf:type owl:Class ;
+    rdfs:subClassOf :GardenInteriorPlace ;
+    rdfs:label "单体建筑"@zh , "Individual Building"@en ;
+    rdfs:comment "圆明园中可独立辨识的单座建筑物，如殿、堂、亭、轩、楼、阁等。"@zh ,
+                 "Individually identifiable buildings in Yuanmingyuan, such as halls, pavilions, towers, and chambers."@en .
+
+:WaterFeature rdf:type owl:Class ;
+    rdfs:subClassOf :GardenInteriorPlace ;
+    rdfs:label "水体"@zh , "Water Feature"@en ;
+    rdfs:comment "圆明园中的湖泊、河渠、溪流等水域空间。"@zh ,
+                 "Bodies of water within Yuanmingyuan, including lakes, canals, and streams."@en .
+
+:Mountain rdf:type owl:Class ;
+    rdfs:subClassOf :GardenInteriorPlace ;
+    rdfs:label "山体"@zh , "Mountain"@en ;
+    rdfs:comment "圆明园中的自然山丘或人工堆叠的假山地形。"@zh ,
+                 "Natural hills or artificially constructed rockery landforms within Yuanmingyuan."@en .
+
+
+# --------------------------------------------------
+# E5_Event 事件
+# --------------------------------------------------
+
+:Event rdf:type owl:Class ;
+    rdfs:label "事件"@zh , "Event"@en ;
+    rdfs:comment "与圆明园相关的、发生在特定时空中的历史行为或状态变化，是本知识图谱的核心节点类型。"@zh ,
+                 "Historical actions or state changes occurring in specific spatiotemporal contexts related to Yuanmingyuan; the core node type of this knowledge graph."@en ;
+    rdfs:seeAlso crm:E5_Event .
+
+:ConstructionEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "营造事件"@zh , "Construction Event"@en ;
+    rdfs:comment "涉及圆明园建筑物或景观的新建、改建、修缮、拆除等工程活动。"@zh ,
+                 "Engineering activities involving the construction, renovation, repair, or demolition of buildings or landscapes in Yuanmingyuan."@en .
+
+:MaterialEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "物料事件"@zh , "Material Event"@en ;
+    rdfs:comment "涉及圆明园所需物料的采办、运输、入库、领用等流转活动。"@zh ,
+                 "Activities involving the procurement, transportation, storage, and distribution of materials needed for Yuanmingyuan."@en .
+
+:FiscalEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "财政事件"@zh , "Fiscal Event"@en ;
+    rdfs:comment "涉及圆明园经费拨付、开支核销、税银调拨等财务活动。"@zh ,
+                 "Financial activities involving fund allocation, expenditure settlement, and tax revenue transfers for Yuanmingyuan."@en .
+
+:AdministrativeDocumentEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "行政文书事件"@zh , "Administrative Document Event"@en ;
+    rdfs:comment "涉及圆明园相关行政文书的拟制、审批、传递等公文流转活动。"@zh ,
+                 "Activities involving the drafting, approval, and transmission of administrative documents related to Yuanmingyuan."@en .
+
+:CourtLifeAndCeremonyEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "园居与典礼事件"@zh , "Court Life and Ceremony Event"@en ;
+    rdfs:comment "皇室成员在圆明园中的日常起居、宴饮、祭祀、庆典等活动。"@zh ,
+                 "Daily life, banquets, sacrificial rites, and ceremonial activities of imperial family members in Yuanmingyuan."@en .
+
+:SecurityAndDisorderEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "安防与失序事件"@zh , "Security and Disorder Event"@en ;
+    rdfs:comment "涉及圆明园安全防卫、火灾、盗窃、外敌侵犯等安全相关事件。"@zh ,
+                 "Events related to security defense, fires, thefts, and foreign invasions involving Yuanmingyuan."@en .
+
+:PersonnelEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "人事事件"@zh , "Personnel Event"@en ;
+    rdfs:comment "涉及圆明园管理与服务人员的任命、调动、奖惩等人事变动。"@zh ,
+                 "Personnel changes involving the appointment, transfer, reward, and punishment of Yuanmingyuan management and service staff."@en .
+
+:GardenHistoryEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "园林兴废事件"@zh , "Garden History Event"@en ;
+    rdfs:comment "涉及圆明园整体或重要组成部分的兴建、扩建、衰败、毁损等宏观历程节点。"@zh ,
+                 "Major milestones in the macro-history of Yuanmingyuan, including its founding, expansion, decline, and destruction."@en .
+
+:OtherEvent rdf:type owl:Class ;
+    rdfs:subClassOf :Event ;
+    rdfs:label "其他事件"@zh , "Other Event"@en ;
+    rdfs:comment "无法归入上述类别的其他与圆明园相关的历史事件。"@zh ,
+                 "Other Yuanmingyuan-related historical events that do not fall into the above categories."@en .
+
+
+# --------------------------------------------------
+# E70_Thing 客体
+# --------------------------------------------------
+
+:Object rdf:type owl:Class ;
+    rdfs:label "客体"@zh , "Object"@en ;
+    rdfs:comment "在圆明园相关事件中被使用、制造、运输或涉及的物质实体。"@zh ,
+                 "Physical entities used, manufactured, transported, or otherwise involved in Yuanmingyuan-related events."@en ;
+    rdfs:seeAlso crm:E70_Thing .
+
+:Artifact rdf:type owl:Class ;
+    rdfs:subClassOf :Object ;
+    rdfs:label "器物"@zh , "Artifact"@en ;
+    rdfs:comment "圆明园中陈设、使用或收藏的各类人工制品，如瓷器、家具、书画等。"@zh ,
+                 "Man-made objects displayed, used, or collected in Yuanmingyuan, such as porcelain, furniture, and paintings."@en .
+
+:Material rdf:type owl:Class ;
+    rdfs:subClassOf :Object ;
+    rdfs:label "物料"@zh , "Material"@en ;
+    rdfs:comment "用于圆明园营造或维护工程的原材料与加工材料，如木料、石料、砖瓦、琉璃等。"@zh ,
+                 "Raw and processed materials used in the construction or maintenance of Yuanmingyuan, such as timber, stone, bricks, and glazed tiles."@en .
+
+:TransportEquipment rdf:type owl:Class ;
+    rdfs:subClassOf :Object ;
+    rdfs:label "运具"@zh , "Transport Equipment"@en ;
+    rdfs:comment "用于运输圆明园相关物料或人员的交通工具，如车、船等。"@zh ,
+                 "Vehicles used to transport materials or personnel related to Yuanmingyuan, such as carts and boats."@en .
+
+
+# --------------------------------------------------
+# EventChain 事件链
+# --------------------------------------------------
+
+:EventChain rdf:type owl:Class ;
+    rdfs:label "事件链"@zh , "Event Chain"@en ;
+    rdfs:comment "由多个具有因果或时序关联的事件构成的有序集合，用于表达复杂历史过程的整体脉络。"@zh ,
+                 "An ordered collection of causally or temporally related events, used to represent the overall trajectory of complex historical processes."@en .
+
+
+# --------------------------------------------------
+# AbstractNorm 抽象规范
+# --------------------------------------------------
+
+:AbstractNorm rdf:type owl:Class ;
+    rdfs:label "抽象规范"@zh , "Abstract Norm"@en ;
+    rdfs:comment "清代制度体系中的抽象概念与规范性约定，用于描述官僚等级与行政规则。"@zh ,
+                 "Abstract concepts and normative conventions within the Qing institutional system, describing bureaucratic hierarchy and administrative rules."@en .
+
+:OfficialRank rdf:type owl:Class ;
+    rdfs:subClassOf :AbstractNorm ;
+    rdfs:label "品级"@zh , "Official Rank"@en ;
+    rdfs:comment "清代九品十八级官僚等级体系中的品秩等级。"@zh ,
+                 "Rank grades within the Qing dynasty nine-rank eighteen-level bureaucratic hierarchy."@en .
+
+:OfficialTitle rdf:type owl:Class ;
+    rdfs:subClassOf :AbstractNorm ;
+    rdfs:label "职官"@zh , "Official Title"@en ;
+    rdfs:comment "清代官僚体制中的具体官职名称，如总管大臣、郎中、员外郎等。"@zh ,
+                 "Specific official position titles within the Qing bureaucratic system, such as Chief Minister, Director, and Vice Director."@en .
+
+:Regulation rdf:type owl:Class ;
+    rdfs:subClassOf :AbstractNorm ;
+    rdfs:label "规制"@zh , "Regulation"@en ;
+    rdfs:comment "清代宫廷或行政体系中关于建筑规格、礼仪标准、用料定额等方面的制度性规定。"@zh ,
+                 "Institutional regulations within the Qing court or administrative system concerning architectural specifications, ceremonial standards, and material quotas."@en .
+
+
+# --------------------------------------------------
+# TemporalInterval 时间区间
+# --------------------------------------------------
+
+:TemporalInterval rdf:type owl:Class ;
+    rdfs:label "时间区间"@zh , "Temporal Interval"@en ;
+    rdfs:comment "事件发生的时间范围或时间点的抽象表示，支持中历与公历两种纪年体系。"@zh ,
+                 "Abstract representation of a time span or time point at which an event occurs, supporting both the Chinese traditional calendar and the Gregorian calendar."@en .
+
+:ChineseCalendarDate rdf:type owl:Class ;
+    rdfs:subClassOf :TemporalInterval ;
+    rdfs:label "中历日期"@zh , "Chinese Calendar Date"@en ;
+    rdfs:comment "以清代年号纪年的传统中国历法日期表示，如'乾隆三年二月初五'。"@zh ,
+                 "A date expressed in the traditional Chinese calendar using Qing reign era names, e.g. 'the 5th day of the 2nd month of Qianlong 3'."@en .
+
+:GregorianDate rdf:type owl:Class ;
+    rdfs:subClassOf :TemporalInterval ;
+    rdfs:label "公历日期"@zh , "Gregorian Date"@en ;
+    rdfs:comment "经中西历对照转换后以格里高利历表示的标准日期。"@zh ,
+                 "A standard date expressed in the Gregorian calendar after conversion from the Chinese traditional calendar."@en .
+
+
+# ============================================================
+# 对象属性 (Object Properties)
+# ============================================================
+
+# --------------------------------------------------
+# 第一组：事件核心属性
+# --------------------------------------------------
+
+:hasAgent rdf:type owl:ObjectProperty ;
+    rdfs:label "有施动者"@zh , "has agent"@en ;
+    rdfs:comment "将事件与其主要执行者或发起者关联。施动者是事件中承担主动角色的行为主体。"@zh ,
+                 "Associates an event with its primary executor or initiator. The agent is the actor bearing the active role in the event."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Actor ;
+    rdfs:seeAlso crm:P14_carried_out_by .
+
+:isAgentOf rdf:type owl:ObjectProperty ;
+    rdfs:label "是施动者于"@zh , "is agent of"@en ;
+    rdfs:comment "将行为主体与其作为施动者参与的事件关联，为hasAgent的逆属性。"@zh ,
+                 "Associates an actor with events in which it serves as the agent. Inverse of hasAgent."@en ;
+    rdfs:domain :Actor ;
+    rdfs:range :Event ;
+    owl:inverseOf :hasAgent .
+
+:hasParticipant rdf:type owl:ObjectProperty ;
+    rdfs:label "有参与者"@zh , "has participant"@en ;
+    rdfs:comment "将事件与一般参与者关联。参与者是在事件中承担被动、协助或间接角色的行为主体，语义范围比施动者更宽泛。"@zh ,
+                 "Associates an event with a general participant. Participants bear passive, assistive, or indirect roles in the event, with broader semantics than agents."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Actor ;
+    rdfs:seeAlso crm:P11_had_participant .
+
+:isParticipantIn rdf:type owl:ObjectProperty ;
+    rdfs:label "参与于"@zh , "is participant in"@en ;
+    rdfs:comment "将行为主体与其作为参与者涉入的事件关联，为hasParticipant的逆属性。"@zh ,
+                 "Associates an actor with events in which it participates. Inverse of hasParticipant."@en ;
+    rdfs:domain :Actor ;
+    rdfs:range :Event ;
+    owl:inverseOf :hasParticipant .
+
+:involvesPlace rdf:type owl:ObjectProperty ;
+    rdfs:label "涉及地点"@zh , "involves place"@en ;
+    rdfs:comment "将事件与其涉及的地理空间关联。一个事件可涉及多个地点，如物料的起运地与目的地。"@zh ,
+                 "Associates an event with geographic spaces it involves. A single event may involve multiple places, such as the origin and destination of material transportation."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Place ;
+    rdfs:seeAlso crm:P7_took_place_at .
+
+:isInvolvedIn rdf:type owl:ObjectProperty ;
+    rdfs:label "被涉及于"@zh , "is involved in"@en ;
+    rdfs:comment "将地点与涉及该地点的事件关联，为involvesPlace的逆属性。"@zh ,
+                 "Associates a place with events that involve it. Inverse of involvesPlace."@en ;
+    rdfs:domain :Place ;
+    rdfs:range :Event ;
+    owl:inverseOf :involvesPlace .
+
+:involvesObject rdf:type owl:ObjectProperty ;
+    rdfs:label "涉及客体"@zh , "involves object"@en ;
+    rdfs:comment "将事件与其涉及的物质实体关联，包括事件中被使用、产出、运输或提及的客体。"@zh ,
+                 "Associates an event with physical entities it involves, including objects used, produced, transported, or referenced in the event."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Object ;
+    rdfs:seeAlso crm:P16_used_specific_object .
+
+:isObjectInvolvedIn rdf:type owl:ObjectProperty ;
+    rdfs:label "作为客体涉及于"@zh , "is object involved in"@en ;
+    rdfs:comment "将客体与涉及该客体的事件关联，为involvesObject的逆属性。"@zh ,
+                 "Associates an object with events that involve it. Inverse of involvesObject."@en ;
+    rdfs:domain :Object ;
+    rdfs:range :Event ;
+    owl:inverseOf :involvesObject .
+
+
+# --------------------------------------------------
+# 第二组：时空属性
+# --------------------------------------------------
+
+:hasTimeSpan rdf:type owl:ObjectProperty ;
+    rdfs:label "有时间跨度"@zh , "has time-span"@en ;
+    rdfs:comment "将事件与表示其发生时间的时间区间实例关联。"@zh ,
+                 "Associates an event with a temporal interval instance representing when the event occurred."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :TemporalInterval ;
+    rdfs:seeAlso crm:P4_has_time-span .
+
+:fallsWithin rdf:type owl:ObjectProperty ,
+                      owl:TransitiveProperty ;
+    rdfs:label "空间从属"@zh , "falls within"@en ;
+    rdfs:comment "表示一个地点在空间上包含于另一个地点之中。该属性具有传递性：若A从属于B，B从属于C，则A从属于C。"@zh ,
+                 "Indicates that one place is spatially contained within another. This property is transitive: if A falls within B and B falls within C, then A falls within C."@en ;
+    rdfs:domain :Place ;
+    rdfs:range :Place ;
+    rdfs:seeAlso crm:P89_falls_within .
+
+:contains rdf:type owl:ObjectProperty ;
+    rdfs:label "空间包含"@zh , "contains"@en ;
+    rdfs:comment "表示一个地点在空间上包含另一个地点，为fallsWithin的逆属性。"@zh ,
+                 "Indicates that one place spatially contains another. Inverse of fallsWithin."@en ;
+    rdfs:domain :Place ;
+    rdfs:range :Place ;
+    owl:inverseOf :fallsWithin .
+
+
+# --------------------------------------------------
+# 第三组：主体与组织属性
+# --------------------------------------------------
+
+:holdsTitle rdf:type owl:ObjectProperty ;
+    rdfs:label "担任职官"@zh , "holds title"@en ;
+    rdfs:comment "将个人与其担任的官职关联。同一人可在不同时期担任不同职官。"@zh ,
+                 "Associates a person with the official title they hold. The same person may hold different titles at different times."@en ;
+    rdfs:domain :Person ;
+    rdfs:range :OfficialTitle .
+
+:belongsToOrganization rdf:type owl:ObjectProperty ;
+    rdfs:label "隶属于"@zh , "belongs to organization"@en ;
+    rdfs:comment "将个人与其所属的机构关联，表示该人作为成员服务于该机构。"@zh ,
+                 "Associates a person with the organization they belong to, indicating membership and service."@en ;
+    rdfs:domain :Person ;
+    rdfs:range :Organization .
+
+:hasMember rdf:type owl:ObjectProperty ;
+    rdfs:label "有成员"@zh , "has member"@en ;
+    rdfs:comment "将机构与其成员关联，为belongsToOrganization的逆属性。"@zh ,
+                 "Associates an organization with its members. Inverse of belongsToOrganization."@en ;
+    rdfs:domain :Organization ;
+    rdfs:range :Person ;
+    owl:inverseOf :belongsToOrganization .
+
+
+# --------------------------------------------------
+# 第四组：事件间关系属性
+# --------------------------------------------------
+
+:consistsOf rdf:type owl:ObjectProperty ;
+    rdfs:label "包含子事件"@zh , "consists of"@en ;
+    rdfs:comment "将一个复合事件与构成它的子事件关联，表示事件的结构性分解。"@zh ,
+                 "Associates a composite event with its constituent sub-events, representing structural decomposition."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Event ;
+    rdfs:seeAlso crm:P9_consists_of .
+
+:isPartOf rdf:type owl:ObjectProperty ;
+    rdfs:label "是子事件于"@zh , "is part of"@en ;
+    rdfs:comment "将子事件与包含它的复合事件关联，为consistsOf的逆属性。"@zh ,
+                 "Associates a sub-event with the composite event containing it. Inverse of consistsOf."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Event ;
+    owl:inverseOf :consistsOf .
+
+:causes rdf:type owl:ObjectProperty ;
+    rdfs:label "导致"@zh , "causes"@en ;
+    rdfs:comment "表示一个事件在因果逻辑上导致了另一个事件的发生，涵盖直接因果与动机驱动两种语义。"@zh ,
+                 "Indicates that one event causally leads to another, encompassing both direct causation and motivational triggers."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Event .
+
+:isCausedBy rdf:type owl:ObjectProperty ;
+    rdfs:label "因之而起"@zh , "is caused by"@en ;
+    rdfs:comment "表示一个事件的发生是由另一个事件导致的，为causes的逆属性。"@zh ,
+                 "Indicates that an event is caused by another event. Inverse of causes."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Event ;
+    owl:inverseOf :causes .
+
+:belongsToChain rdf:type owl:ObjectProperty ;
+    rdfs:label "属于事件链"@zh , "belongs to chain"@en ;
+    rdfs:comment "将单个事件与其所属的事件链关联，表示该事件是某一宏观历史过程的组成部分。"@zh ,
+                 "Associates an individual event with the event chain it belongs to, indicating the event is part of a macro-historical process."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :EventChain .
+
+:chainContains rdf:type owl:ObjectProperty ;
+    rdfs:label "事件链包含"@zh , "chain contains"@en ;
+    rdfs:comment "将事件链与其包含的事件关联，为belongsToChain的逆属性。"@zh ,
+                 "Associates an event chain with the events it contains. Inverse of belongsToChain."@en ;
+    rdfs:domain :EventChain ;
+    rdfs:range :Event ;
+    owl:inverseOf :belongsToChain .
+
+
+# --------------------------------------------------
+# 第五组：文献溯源属性
+# --------------------------------------------------
+
+:isDocumentedIn rdf:type owl:ObjectProperty ;
+    rdfs:label "记载于"@zh , "is documented in"@en ;
+    rdfs:comment "将事件与记载该事件的文献关联，用于建立事件信息的文献溯源链条。"@zh ,
+                 "Associates an event with the document that records it, establishing a provenance chain for event information."@en ;
+    rdfs:domain :Event ;
+    rdfs:range :Document .
+
+:documents rdf:type owl:ObjectProperty ;
+    rdfs:label "记载了"@zh , "documents"@en ;
+    rdfs:comment "将文献与其记载的事件关联，为isDocumentedIn的逆属性。"@zh ,
+                 "Associates a document with the events it records. Inverse of isDocumentedIn."@en ;
+    rdfs:domain :Document ;
+    rdfs:range :Event ;
+    owl:inverseOf :isDocumentedIn .
+
+:hasSource rdf:type owl:ObjectProperty ;
+    rdfs:label "原始出处"@zh , "has source"@en ;
+    rdfs:comment "将一篇文献与作为其原始来源的另一篇文献关联，用于表达文献之间的派生溯源关系。"@zh ,
+                 "Associates a document with another document that serves as its primary source, expressing derivation and provenance between documents."@en ;
+    rdfs:domain :Document ;
+    rdfs:range :Document .
+
+
+# ============================================================
+# 数据属性 (Data Properties)
+# ============================================================
+
+:hasName rdf:type owl:DatatypeProperty ;
+    rdfs:label "名称"@zh , "has name"@en ;
+    rdfs:comment "实例的规范名称，作为知识图谱中该实例的主要标识性文本。"@zh ,
+                 "The canonical name of an instance, serving as its primary identifying text in the knowledge graph."@en ;
+    rdfs:range xsd:string .
+
+:hasDescription rdf:type owl:DatatypeProperty ;
+    rdfs:label "描述"@zh , "has description"@en ;
+    rdfs:comment "对实例的补充说明文本，用于提供超出名称的背景信息或细节解释。"@zh ,
+                 "Supplementary descriptive text for an instance, providing background information or detailed explanations beyond the name."@en ;
+    rdfs:range xsd:string .
+
+:hasDateText rdf:type owl:DatatypeProperty ;
+    rdfs:label "日期文本"@zh , "has date text"@en ;
+    rdfs:comment "时间区间实例的原始日期文字表述，保留档案或文献中记载的原始纪年形式。"@zh ,
+                 "The original textual date expression of a temporal interval instance, preserving the date format as recorded in archival or literary sources."@en ;
+    rdfs:domain :TemporalInterval ;
+    rdfs:range xsd:string .
+
+:hasDate rdf:type owl:DatatypeProperty ;
+    rdfs:label "标准日期"@zh , "has date"@en ;
+    rdfs:comment "经中西历转换后以格里高利历表示的标准化日期值，便于计算机排序与时间推理。"@zh ,
+                 "A standardized Gregorian calendar date value after conversion from the Chinese calendar, enabling computational sorting and temporal reasoning."@en ;
+    rdfs:domain :TemporalInterval ;
+    rdfs:range xsd:date .
+
+:hasSourceText rdf:type owl:DatatypeProperty ;
+    rdfs:label "原始文本"@zh , "has source text"@en ;
+    rdfs:comment "事件实例对应的档案或文献原文片段，用于支撑事件信息的溯源验证。"@zh ,
+                 "The original archival or literary text fragment corresponding to an event instance, supporting provenance verification of event information."@en ;
+    rdfs:domain :Event ;
+    rdfs:range xsd:string .
+
+:hasRankLevel rdf:type owl:DatatypeProperty ;
+    rdfs:label "品级数值"@zh , "has rank level"@en ;
+    rdfs:comment "清代官僚品级的数值化表示，数值越小品级越高（如正一品为1，从一品为2），便于品级间的比较与排序。"@zh ,
+                 "Numerical representation of the Qing bureaucratic rank, where lower values indicate higher ranks (e.g. rank 1 for zheng-yipin), enabling comparison and sorting."@en ;
+    rdfs:domain :OfficialRank ;
+    rdfs:range xsd:integer .

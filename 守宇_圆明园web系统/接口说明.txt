@@ -1,0 +1,102 @@
+圆明园知识图谱 · 数据库接口
+═══════════════════════════════════════
+
+连接信息
+───────
+  地址:     bolt://localhost:7687
+  HTTP:     http://localhost:7474
+  用户名:   neo4j
+  密码:     ymysj123
+  数据库:   neo4j
+
+数据概况
+───────
+  节点总数: 4,915 / 关系总数: 8,543
+
+  节点分布:
+    Person             1,085   人物（皇帝/官员/太监/工匠等）
+    TemporalInterval      856   时间区间（中历/公历日期）
+    Event                 846   事件
+    Place                 639   地点（建筑/景区/行政区域等）
+    AbstractNorm          449   抽象规范（职官/品级/规制）
+    Object                429   客体（物料/器物/运具）
+    Document              421   文献（档案文献）
+    Organization          189   机构（内廷/中央/地方）
+
+  关系分布:
+    INVOLVES_PLACE       1,591   事件→涉及地点
+    HAS_AGENT             1,137   事件→施动者
+    HAS_PARTICIPANT       1,033   事件→参与者
+    INVOLVES_OBJECT         910   事件→涉及客体
+    HOLDS_TITLE             844   人物→担任官职
+    IS_DOCUMENTED_IN        835   事件→记载于文献
+    HAS_TIME_SPAN           815   事件→时间跨度
+    CONSISTS_OF             477   事件→包含子事件
+    BELONGS_TO_ORGANIZATION 409   人物→隶属机构
+    FALLS_WITHIN            333   地点→空间从属
+    CAUSES                  107   事件→导致
+    HAS_SOURCE               52   实体→原始出处
+
+  事件类型:
+    财政事件 207  /  安防与失序事件 144  /  人事事件 114
+    营造事件 111  /  园居与典礼事件  79  /  行政文书事件 77
+    物料事件  60  /  其他事件        38  /  园林兴废事件 16
+
+常用查询
+───────
+  在 Neo4j Browser (http://localhost:7474) 中粘贴执行。
+
+  搜索实体
+    MATCH (n) WHERE n.name CONTAINS "雍正" RETURN n.name, labels(n), n.entity_type_cn LIMIT 20
+
+  搜索事件
+    MATCH (e:Event) WHERE e.name CONTAINS "圆明园" RETURN e.name, e.event_type_cn, e.date_text LIMIT 20
+
+  某人参与的事件
+    MATCH (p) WHERE p.name CONTAINS "雍正"
+    MATCH (p)<-[r]-(e:Event)
+    RETURN e.name, type(r), e.date_text, r.relation_cn ORDER BY e.date_text LIMIT 30
+
+  某地发生的事件
+    MATCH (pl:Place) WHERE pl.name CONTAINS "圆明园"
+    MATCH (pl)<-[:INVOLVES_PLACE]-(e:Event)
+    RETURN e.name, e.event_type_cn, e.date_text LIMIT 30
+
+  事件详情（含全部关联）
+    MATCH (e:Event {event_id: "evt_21_1"})
+    OPTIONAL MATCH (e)-[r]-(n)
+    RETURN e, r, n
+
+  两实体最短路径
+    MATCH p = shortestPath((a)-[*1..3]-(b))
+    WHERE a.name CONTAINS "雍正" AND b.name CONTAINS "圆明园"
+    RETURN [n in nodes(p) | n.name] AS 路径,
+           [r in relationships(p) | type(r)] AS 关系
+
+  按事件类型查询
+    MATCH (e:Event {event_type_cn: "营造事件"})
+    RETURN e.name, e.date_text LIMIT 20
+
+  人物关系网络
+    MATCH (p) WHERE p.name CONTAINS "雍正"
+    MATCH (p)-[r]-(m)
+    RETURN type(r), r.relation_cn, m.name, m.entity_type_cn LIMIT 50
+
+  某人官职
+    MATCH (p) WHERE p.name CONTAINS "马齐"
+    MATCH (p)-[:HOLDS_TITLE]->(t)
+    RETURN p.name, t.name
+
+  事件因果关系
+    MATCH (e1:Event)-[:CAUSES]->(e2:Event)
+    RETURN e1.name, e2.name LIMIT 30
+
+Python 查询示例
+──────────────
+  from neo4j import GraphDatabase
+
+  d = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "ymysj123"))
+  with d.session(database="neo4j") as s:
+      for r in s.run("MATCH (e:Event) WHERE e.name CONTAINS '圆明园' RETURN e LIMIT 5").data():
+          print(r)
+  d.close()
