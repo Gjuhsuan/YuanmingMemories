@@ -34,7 +34,7 @@ CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://loca
 
 # ── GraphRAG 数据文件路径 ──
 # 数据文件位于项目根目录 (YuanmingMemories/)
-_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 GRAPHRAG_ENTRIES_PATH = Path(os.environ.get(
     "GRAPHRAG_ENTRIES_PATH",
     str(_PROJECT_ROOT / "entries_simplified.jsonl")

@@ -13,7 +13,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000',
+        target: 'http://127.0.0.1:9090',
         changeOrigin: true,
         // SSE 需要禁用代理缓冲
         configure: (proxy) => {
@@ -25,7 +25,7 @@ export default defineConfig({
         },
       },
       '/static': {
-        target: 'http://127.0.0.1:8000',
+        target: 'http://127.0.0.1:9090',
         changeOrigin: true,
       },
     },

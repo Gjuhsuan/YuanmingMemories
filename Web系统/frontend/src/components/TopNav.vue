@@ -7,6 +7,7 @@ const router = useRouter()
 const context = useContextStore()
 
 const tabs = [
+  { path: '/ontology', label: '本体结构' },
   { path: '/explore', label: '图谱探索' },
   { path: '/chat', label: 'AI 问答' },
 ]

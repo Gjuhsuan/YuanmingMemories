@@ -95,7 +95,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 # ── 注册路由 ──
-from .routers import graph, node, cypher, chat, preload, archive
+from .routers import graph, node, cypher, chat, preload, archive, ontology
 
 app.include_router(graph.router)
 app.include_router(node.router)
@@ -103,11 +103,12 @@ app.include_router(cypher.router)
 app.include_router(chat.router)
 app.include_router(preload.router)
 app.include_router(archive.router)
+app.include_router(ontology.router)
 
 # ── 挂载静态文件 ──
 import os as _os
 _ARCHIVE_PNG_DIR = _os.path.join(
-    _os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.dirname(__file__)))),
+    _os.path.dirname(_os.path.dirname(_os.path.dirname(__file__))),
     "archive_pages", "png"
 )
 if _os.path.isdir(_ARCHIVE_PNG_DIR):

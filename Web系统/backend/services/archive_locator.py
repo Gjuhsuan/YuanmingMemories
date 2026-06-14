@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Optional
 
 # 数据文件路径
-_DATA_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent / "archive_pages"
+_DATA_DIR = Path(__file__).resolve().parent.parent.parent.parent / "archive_pages"
 _ENTRY_MAP_FILE = _DATA_DIR / "entry_page_map.json"
 _PAGES_FILE = _DATA_DIR / "pages_simplified.jsonl"
 
