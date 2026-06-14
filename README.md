@@ -4,11 +4,11 @@
 
 ## 前置条件
 
-| 依赖 | 版本要求 |
-|---|---|
-| Python | 3.11+ |
-| Node.js | 18+ |
-| Neo4j | 已启动（Community Edition 即可） |
+| 依赖    | 版本要求                         |
+| ------- | -------------------------------- |
+| Python  | 3.11+                            |
+| Node.js | 18+                              |
+| Neo4j   | 已启动（Community Edition 即可） |
 
 ## 第一步：数据导入 Neo4j
 
@@ -25,16 +25,19 @@
 脚本默认从环境变量 `NEO4J_PASSWORD` 读取密码。如果你的 Neo4j 密码不是默认值，请先设置：
 
 **Windows PowerShell:**
+
 ```powershell
 $env:NEO4J_PASSWORD = "你的密码"
 ```
 
 **Windows CMD:**
+
 ```cmd
 set NEO4J_PASSWORD=你的密码
 ```
 
 **Linux / macOS:**
+
 ```bash
 export NEO4J_PASSWORD=你的密码
 ```
@@ -48,6 +51,7 @@ python import_to_neo4j.py
 ```
 
 脚本会自动清空现有数据库并重新导入。导入的数据包括：
+
 - **阶段一**（`stage1_results.jsonl`）：事件（Event）节点
 - **阶段二**（`stage2_results.normalized.jsonl`）：实体节点、属性、关系
 
@@ -66,8 +70,7 @@ python import_to_neo4j.py --clear          # 导入前清空数据库（默认�
 ### 后端（Python）
 
 ```bash
-cd Web系统
-pip install -r backend/requirements.txt
+conda env create -f environment.yml
 ```
 
 主要依赖：`fastapi`、`uvicorn`、`neo4j`、`pydantic`、`anthropic`、`httpx`、`sse-starlette`
@@ -88,11 +91,11 @@ npm install
 ### ① 启动后端
 
 ```bash
-cd Web系统
-uvicorn backend.main:app --reload --port 9090 --host 127.0.0.1
+uvicorn Web系统.backend.main:app --reload --port 9090 --host 127.0.0.1
 ```
 
 后端运行在 **http://127.0.0.1:9090**，启动时会自动：
+
 - 检查 Neo4j 连接
 - 初始化全文索引
 - 预热 GraphRAG 图底座索引
@@ -119,6 +122,7 @@ npm run dev
 ### 方式一：使用 DeepSeek（默认）
 
 **Windows PowerShell:**
+
 ```powershell
 $env:LLM_API_KEY = "sk-xxxxxxxx"
 $env:LLM_BASE_URL = "https://api.deepseek.com/v1"
@@ -135,19 +139,19 @@ $env:LLM_MODEL = "claude-sonnet-4-6"
 
 ### 全部环境变量
 
-| 变量 | 默认值 | 说明 |
-|---|---|---|
-| `NEO4J_URI` | `bolt://localhost:7687` | Neo4j 连接地址 |
-| `NEO4J_USER` | `neo4j` | Neo4j 用户名 |
-| `NEO4J_PASSWORD` | `ymysj123` | Neo4j 密码 |
-| `NEO4J_DATABASE` | `neo4j` | Neo4j 数据库名 |
-| `LLM_PROVIDER` | `openai` | LLM 协议：`openai`（兼容）或 `anthropic` |
-| `LLM_API_KEY` | — | API Key |
-| `LLM_BASE_URL` | `https://api.deepseek.com/v1` | API 地址 |
-| `LLM_MODEL` | `deepseek-v4-flash` | 模型名称 |
-| `RAG_RETRIEVE_TOPK` | `40` | GraphRAG 检索 Top-K |
-| `RAG_HOPS` | `2` | 子图扩展跳数 |
-| `CHAT_RATE_LIMIT_PER_MINUTE` | `20` | 问答速率限制 |
+| 变量                           | 默认值                          | 说明                                         |
+| ------------------------------ | ------------------------------- | -------------------------------------------- |
+| `NEO4J_URI`                  | `bolt://localhost:7687`       | Neo4j 连接地址                               |
+| `NEO4J_USER`                 | `neo4j`                       | Neo4j 用户名                                 |
+| `NEO4J_PASSWORD`             | `ymysj123`                    | Neo4j 密码                                   |
+| `NEO4J_DATABASE`             | `neo4j`                       | Neo4j 数据库名                               |
+| `LLM_PROVIDER`               | `openai`                      | LLM 协议：`openai`（兼容）或 `anthropic` |
+| `LLM_API_KEY`                | —                              | API Key                                      |
+| `LLM_BASE_URL`               | `https://api.deepseek.com/v1` | API 地址                                     |
+| `LLM_MODEL`                  | `deepseek-v4-flash`           | 模型名称                                     |
+| `RAG_RETRIEVE_TOPK`          | `40`                          | GraphRAG 检索 Top-K                          |
+| `RAG_HOPS`                   | `2`                           | 子图扩展跳数                                 |
+| `CHAT_RATE_LIMIT_PER_MINUTE` | `20`                          | 问答速率限制                                 |
 
 ---
 

@@ -6,7 +6,7 @@ import OntologyPage from '@/pages/OntologyPage.vue'
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
-    { path: '/', redirect: '/explore' },
+    { path: '/', redirect: '/ontology' },
     { path: '/explore', component: ExplorePage, meta: { title: '图谱探索' } },
     { path: '/chat', component: ChatPage, meta: { title: 'AI 问答' } },
     { path: '/chat/:sessionId', component: ChatPage, meta: { title: 'AI 问答' } },
